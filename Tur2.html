@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>TravelDream | Туристическое агентство</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            color: #1e2a3e;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #0f4c5c, #2a9d8f);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+            cursor: pointer;
+            transition: opacity 0.3s;
+            white-space: nowrap;
+        }
+
+        .logo:hover {
+            opacity: 0.8;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 36px;
+            list-style: none;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 600;
+            color: #1e2a3e;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover {
+            color: #2a9d8f;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.5)), url('https://images.pexels.com/photos/2387873/pexels-photo-2387873.jpeg?auto=compress&cs=tinysrgb&w=1600');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: white;
+            margin-top: 80px;
+        }
+
+        .hero-content h1 {
+            font-size: 64px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-content p {
+            font-size: 20px;
+            max-width: 700px;
+            margin: 0 auto 32px;
+            opacity: 0.95;
+            animation: fadeInUp 1s ease 0.1s both;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 32px;
+            border-radius: 60px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .btn-primary {
+            background: #2a9d8f;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #21867a;
+            transform: translateY(-3px);
+        }
+
+        .btn-outline {
+            border: 2px solid white;
+            color: white;
+        }
+
+        .btn-outline:hover {
+            background: white;
+            color: #1e2a3e;
+        }
+
+        /* Секции */
+        section {
+            padding: 100px 0;
+        }
+
+        .section-title {
+            font-size: 40px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title span {
+            background: linear-gradient(135deg, #0f4c5c, #2a9d8f);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        /* Услуги карточки */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 32px;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 32px;
+            padding: 32px 24px;
+            text-align: center;
+            box-shadow: 0 20px 35px -10px rgba(0,0,0,0.05);
+            transition: all 0.4s;
+            border: 1px solid #eef2f5;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 40px -15px rgba(0,0,0,0.1);
+        }
+
+        .service-card i {
+            font-size: 52px;
+            color: #2a9d8f;
+            margin-bottom: 24px;
+        }
+
+        .service-card h3 {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        /* О нас */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .about-text h3 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .about-text p {
+            margin-bottom: 24px;
+            color: #2c3e50;
+        }
+
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            margin-top: 30px;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .feature i {
+            font-size: 28px;
+            color: #2a9d8f;
+        }
+
+        .about-img img {
+            width: 100%;
+            border-radius: 48px;
+            box-shadow: 0 20px 30px -10px rgba(0,0,0,0.1);
+        }
+
+        /* Контакты + форма */
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            background: #f8fafc;
+            border-radius: 56px;
+            padding: 48px;
+        }
+
+        .contact-info h3, .contact-form h3 {
+            font-size: 28px;
+            margin-bottom: 24px;
+        }
+
+        .contact-details {
+            margin: 32px 0;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            text-decoration: none;
+            color: inherit;
+            transition: 0.3s;
+        }
+
+        .contact-item:hover {
+            transform: translateX(8px);
+            color: #2a9d8f;
+        }
+
+        .contact-item i {
+            width: 44px;
+            height: 44px;
+            background: white;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #2a9d8f;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 20px;
+            margin-top: 32px;
+        }
+
+        .social-links a {
+            font-size: 28px;
+            color: #1e2a3e;
+            transition: 0.3s;
+            display: inline-block;
+        }
+
+        .social-links a:hover {
+            transform: translateY(-3px);
+            color: #2a9d8f;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 14px 20px;
+            border: 1px solid #cbd5e1;
+            border-radius: 32px;
+            font-family: inherit;
+            font-size: 16px;
+            transition: 0.2s;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #2a9d8f;
+            box-shadow: 0 0 0 3px rgba(42,157,143,0.2);
+        }
+
+        button[type="submit"] {
+            background: #2a9d8f;
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 40px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        button[type="submit"]:hover {
+            background: #21867a;
+        }
+
+        footer {
+            background: #0f172a;
+            color: #cbd5e1;
+            text-align: center;
+            padding: 32px;
+        }
+
+        /* Анимации */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Мобильная версия */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: row;
+                justify-content: space-between;
+                gap: 12px;
+                padding: 16px 0;
+            }
+            
+            .logo {
+                font-size: 22px;
+                white-space: nowrap;
+            }
+            
+            .nav-links {
+                gap: 12px;
+                flex-wrap: wrap;
+                justify-content: flex-end;
+            }
+            
+            .nav-links li a {
+                font-size: 13px;
+                white-space: nowrap;
+            }
+            
+            .hero-content h1 {
+                font-size: 38px;
+            }
+            
+            .hero-content p {
+                font-size: 16px;
+                padding: 0 16px;
+            }
+            
+            .btn-group {
+                gap: 12px;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+            
+            .about-grid, .contact-wrapper {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title {
+                font-size: 28px;
+            }
+            
+            .contact-wrapper {
+                padding: 28px;
+            }
+            
+            section {
+                padding: 60px 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .nav-links {
+                justify-content: center;
+            }
+            
+            .hero-content h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <div class="navbar">
+            <div class="logo" id="logoLink">🌍 TravelDream</div>
+            <ul class="nav-links">
+                <li><a href="#home">Главная</a></li>
+                <li><a href="#services">Услуги</a></li>
+                <li><a href="#about">О нас</a></li>
+                <li><a href="#contact">Контакты</a></li>
+            </ul>
+        </div>
+    </div>
+</header>
+
+<main>
+    <!-- Hero -->
+    <section id="home" class="hero">
+        <div class="container hero-content">
+            <h1>Путешествуй с мечтой</h1>
+            <p>Индивидуальные туры, горящие путевки и незабываемые приключения. Откройте мир вместе с TravelDream.</p>
+            <div class="btn-group">
+                <a href="#services" class="btn btn-primary">Наши туры</a>
+                <a href="#contact" class="btn btn-outline">Связаться с экспертом</a>
+                <a href="#contact" class="btn btn-primary" style="background: #e76f51; border-color: #e76f51;">📞 Заявка</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Услуги -->
+    <section id="services">
+        <div class="container">
+            <h2 class="section-title">Что мы <span>предлагаем</span></h2>
+            <div class="services-grid">
+                <div class="service-card fade-up">
+                    <i class="fas fa-plane-departure"></i>
+                    <h3>Авиабилеты</h3>
+                    <p>Лучшие цены на рейсы от 300+ авиакомпаний. Эконом и бизнес класс.</p>
+                </div>
+                <div class="service-card fade-up">
+                    <i class="fas fa-hotel"></i>
+                    <h3>Отели 5*</h3>
+                    <p>Роскошные виллы, бутик-отели и проверенные апартаменты.</p>
+                </div>
+                <div class="service-card fade-up">
+                    <i class="fas fa-umbrella-beach"></i>
+                    <h3>Пакетные туры</h3>
+                    <p>Всё включено: перелёт, трансфер, страховка и завтраки.</p>
+                </div>
+                <div class="service-card fade-up">
+                    <i class="fas fa-hiking"></i>
+                    <h3>Экскурсии</h3>
+                    <p>Авторские маршруты с местными гидами.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- О нас -->
+    <section id="about">
+        <div class="container about-grid">
+            <div class="about-text fade-up">
+                <h3>Ваше доверие — <span style="color:#2a9d8f;">наша репутация</span></h3>
+                <p>TravelDream основан в 2015 году опытными путешественниками. Мы организуем поездки в 70+ стран. Наша команда всегда на связи 24/7, даже если вы за полярным кругом.</p>
+                <div class="features">
+                    <div class="feature"><i class="fas fa-check-circle"></i> 5000+ счастливых туристов</div>
+                    <div class="feature"><i class="fas fa-check-circle"></i> Без скрытых комиссий</div>
+                    <div class="feature"><i class="fas fa-check-circle"></i> Индивидуальный подход</div>
+                </div>
+            </div>
+            <div class="about-img fade-up">
+                <img src="https://images.pexels.com/photos/38238/maldives-ile-beach-sun-palmtree-38238.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Команда TravelDream">
+            </div>
+        </div>
+    </section>
+
+    <!-- Контакты + форма -->
+    <section id="contact">
+        <div class="container">
+            <h2 class="section-title">Свяжитесь <span>с нами</span></h2>
+            <div class="contact-wrapper">
+                <div class="contact-info fade-up">
+                    <h3>📞 Контакты</h3>
+                    <div class="contact-details">
+                        <a href="tel:+79991234567" class="contact-item">
+                            <i class="fas fa-phone-alt"></i> +7 (999) 123-45-67
+                        </a>
+                        <a href="mailto:hello@traveldream.ru" class="contact-item">
+                            <i class="fas fa-envelope"></i> hello@traveldream.ru
+                        </a>
+                        <a href="https://maps.google.com/?q=Москва+ул+Путешествий+15" target="_blank" class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i> Москва, ул. Путешествий, 15
+                        </a>
+                    </div>
+                    <div class="social-links">
+                        <a href="https://t.me/travel_dream" target="_blank"><i class="fab fa-telegram"></i></a>
+                        <a href="https://wa.me/79991234567" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                        <a href="https://instagram.com/travel_dream" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://vk.com/travel_dream" target="_blank"><i class="fab fa-vk"></i></a>
+                    </div>
+                </div>
+                <div class="contact-form fade-up">
+                    <h3>✈️ Оставить заявку</h3>
+                    <form id="travelForm">
+                        <div class="form-group"><input type="text" placeholder="Ваше имя" required></div>
+                        <div class="form-group"><input type="email" placeholder="Email или телефон" required></div>
+                        <div class="form-group"><textarea rows="3" placeholder="Куда мечтаете поехать?"></textarea></div>
+                        <button type="submit">Отправить →</button>
+                    </form>
+                    <p style="margin-top: 16px; font-size: 14px; color: #4b5563;">Нажимая на кнопку, вы соглашаетесь с политикой обработки данных.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p>© 2025 TravelDream — туристическое агентство. Все мечты сбываются.</p>
+</footer>
+
+<script>
+    // Плавная анимация появления при скролле
+    const fadeElements = document.querySelectorAll('.fade-up');
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.2 });
+    
+    fadeElements.forEach(el => observer.observe(el));
+    
+    // Обработка формы (уведомление, потом можно подключить реальную отправку)
+    const form = document.getElementById('travelForm');
+    if(form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Спасибо! Наш менеджер свяжется с вами в ближайшее время.');
+            form.reset();
+        });
+    }
+
+    // Плавный скролл для навигации
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if(href === "#" || href === "") return;
+            const target = document.querySelector(href);
+            if(target) {
+                e.preventDefault();
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    });
+
+    // Клик по логотипу — прокрутка наверх
+    const logo = document.getElementById('logoLink');
+    if(logo) {
+        logo.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
+</script>
+</body>
+</html>
