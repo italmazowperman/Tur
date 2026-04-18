@@ -338,6 +338,7 @@
             cursor: pointer;
             width: 100%;
             font-size: 16px;
+            transition: 0.3s;
         }
 
         button[type="submit"]:hover {
@@ -448,6 +449,38 @@
                 font-size: 28px;
             }
         }
+
+        /* Стили для уведомления */
+        .success-message, .error-message {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            z-index: 10000;
+            animation: slideIn 0.3s ease;
+        }
+
+        .success-message {
+            background: #2a9d8f;
+        }
+
+        .error-message {
+            background: #e76f51;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
     </style>
 </head>
 <body>
@@ -554,12 +587,25 @@
                 </div>
                 <div class="contact-form fade-up">
                     <h3>✈️ Оставить заявку</h3>
-                    <form id="travelForm">
-                        <div class="form-group"><input type="text" placeholder="Ваше имя" required></div>
-                        <div class="form-group"><input type="email" placeholder="Email или телефон" required></div>
-                        <div class="form-group"><textarea rows="3" placeholder="Куда мечтаете поехать?"></textarea></div>
+                    
+                    <!-- ФОРМА С ОТПРАВКОЙ НА ПОЧТУ -->
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <input type="text" id="userName" placeholder="Ваше имя" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="userEmail" placeholder="Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" id="userPhone" placeholder="Телефон">
+                        </div>
+                        <div class="form-group">
+                            <textarea id="userMessage" rows="3" placeholder="Куда мечтаете поехать?" required></textarea>
+                        </div>
                         <button type="submit">Отправить →</button>
                     </form>
+                    <!-- КОНЕЦ ФОРМЫ -->
+                    
                     <p style="margin-top: 16px; font-size: 14px; color: #4b5563;">Нажимая на кнопку, вы соглашаетесь с политикой обработки данных.</p>
                 </div>
             </div>
@@ -572,6 +618,90 @@
 </footer>
 
 <script>
+    // ========== НАСТРОЙКА ФОРМЫ ==========
+    // 🔴 ЗАМЕНИ ЭТУ ПОЧТУ НА СВОЮ! 🔴
+    const YOUR_EMAIL = perman.italmazow95@gmail.com;
+    // =====================================
+    
+    const form = document.getElementById('contactForm');
+    
+    // Функция показа уведомления
+    function showNotification(message, isSuccess = true) {
+        const notification = document.createElement('div');
+        notification.className = isSuccess ? 'success-message' : 'error-message';
+        notification.textContent = message;
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.remove();
+        }, 4000);
+    }
+    
+    // Отправка формы
+    if (form) {
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Собираем данные
+            const name = document.getElementById('userName').value;
+            const email = document.getElementById('userEmail').value;
+            const phone = document.getElementById('userPhone').value;
+            const message = document.getElementById('userMessage').value;
+            
+            // Формируем текст письма
+            const emailBody = `
+                📋 НОВАЯ ЗАЯВКА С САЙТА TRAVELDREAM
+                
+                👤 Имя: ${name}
+                📧 Email: ${email}
+                📞 Телефон: ${phone || "не указан"}
+                ✈️ Пожелания: ${message}
+                
+                ---
+                Отправлено с сайта TravelDream
+                ${window.location.href}
+            `;
+            
+            // Кнопка "отправлено" состояние
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Отправка...';
+            submitBtn.disabled = true;
+            
+            try {
+                // Отправка через FormSubmit сервис
+                const response = await fetch('https://formsubmit.co/ajax/' + YOUR_EMAIL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        email: email,
+                        phone: phone,
+                        message: message,
+                        _subject: 'Новая заявка с TravelDream!',
+                        _template: 'table'
+                    })
+                });
+                
+                if (response.ok) {
+                    showNotification('✅ Заявка отправлена! Мы свяжемся с вами в ближайшее время.', true);
+                    form.reset();
+                } else {
+                    throw new Error('Ошибка отправки');
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+                showNotification('❌ Ошибка отправки. Пожалуйста, позвоните нам или попробуйте позже.', false);
+            } finally {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+    }
+    
     // Плавная анимация появления при скролле
     const fadeElements = document.querySelectorAll('.fade-up');
     
@@ -585,32 +715,22 @@
     
     fadeElements.forEach(el => observer.observe(el));
     
-    // Обработка формы (уведомление, потом можно подключить реальную отправку)
-    const form = document.getElementById('travelForm');
-    if(form) {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Спасибо! Наш менеджер свяжется с вами в ближайшее время.');
-            form.reset();
-        });
-    }
-
     // Плавный скролл для навигации
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             const href = this.getAttribute('href');
-            if(href === "#" || href === "") return;
+            if (href === "#" || href === "") return;
             const target = document.querySelector(href);
-            if(target) {
+            if (target) {
                 e.preventDefault();
                 target.scrollIntoView({ behavior: 'smooth' });
             }
         });
     });
-
+    
     // Клик по логотипу — прокрутка наверх
     const logo = document.getElementById('logoLink');
-    if(logo) {
+    if (logo) {
         logo.addEventListener('click', function() {
             window.scrollTo({
                 top: 0,
