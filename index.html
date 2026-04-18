@@ -594,15 +594,15 @@
                             <input type="text" id="userName" placeholder="Ваше имя" required>
                         </div>
                         <div class="form-group">
-                            <input type="email" id="userEmail" placeholder="Email" required>
+                            <input type="email" id="userEmail" placeholder="Ваш Email" required>
                         </div>
                         <div class="form-group">
-                            <input type="tel" id="userPhone" placeholder="Телефон">
+                            <input type="tel" id="userPhone" placeholder="Ваш телефон">
                         </div>
                         <div class="form-group">
-                            <textarea id="userMessage" rows="3" placeholder="Куда мечтаете поехать?" required></textarea>
+                            <textarea id="userMessage" rows="4" placeholder="Куда мечтаете поехать? Какие даты? Есть ли пожелания?" required></textarea>
                         </div>
-                        <button type="submit">Отправить →</button>
+                        <button type="submit">Отправить заявку →</button>
                     </form>
                     <!-- КОНЕЦ ФОРМЫ -->
                     
@@ -619,14 +619,18 @@
 
 <script>
     // ========== НАСТРОЙКА ФОРМЫ ==========
-    // 🔴 ЗАМЕНИ ЭТУ ПОЧТУ НА СВОЮ! 🔴
-    const YOUR_EMAIL = perman.italmazow95@gmail.com;
+    // 🔴 ВАЖНО: ЗАМЕНИ ЭТУ ПОЧТУ НА СВОЮ! 🔴
+    const YOUR_EMAIL = "perman.italmazow95@gmail.com";
     // =====================================
     
     const form = document.getElementById('contactForm');
     
     // Функция показа уведомления
     function showNotification(message, isSuccess = true) {
+        // Удаляем старое уведомление, если есть
+        const oldNotification = document.querySelector('.success-message, .error-message');
+        if (oldNotification) oldNotification.remove();
+        
         const notification = document.createElement('div');
         notification.className = isSuccess ? 'success-message' : 'error-message';
         notification.textContent = message;
@@ -634,7 +638,7 @@
         
         setTimeout(() => {
             notification.remove();
-        }, 4000);
+        }, 5000);
     }
     
     // Отправка формы
@@ -648,19 +652,11 @@
             const phone = document.getElementById('userPhone').value;
             const message = document.getElementById('userMessage').value;
             
-            // Формируем текст письма
-            const emailBody = `
-                📋 НОВАЯ ЗАЯВКА С САЙТА TRAVELDREAM
-                
-                👤 Имя: ${name}
-                📧 Email: ${email}
-                📞 Телефон: ${phone || "не указан"}
-                ✈️ Пожелания: ${message}
-                
-                ---
-                Отправлено с сайта TravelDream
-                ${window.location.href}
-            `;
+            // Проверка минимальных полей
+            if (!name || !email || !message) {
+                showNotification('❌ Пожалуйста, заполните имя, email и сообщение', false);
+                return;
+            }
             
             // Кнопка "отправлено" состояние
             const submitBtn = form.querySelector('button[type="submit"]');
@@ -681,8 +677,9 @@
                         email: email,
                         phone: phone,
                         message: message,
-                        _subject: 'Новая заявка с TravelDream!',
-                        _template: 'table'
+                        _subject: '✈️ Новая заявка с TravelDream!',
+                        _template: 'table',
+                        _captcha: 'false'
                     })
                 });
                 
@@ -694,7 +691,7 @@
                 }
             } catch (error) {
                 console.error('Ошибка:', error);
-                showNotification('❌ Ошибка отправки. Пожалуйста, позвоните нам или попробуйте позже.', false);
+                showNotification('❌ Ошибка отправки. Пожалуйста, позвоните нам по телефону +7 (999) 123-45-67', false);
             } finally {
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
